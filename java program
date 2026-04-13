@@ -1,0 +1,111 @@
+import java.util.*;
+
+
+class Credential {
+    String site;
+    String username;
+    String password;
+
+  
+    Credential(String site, String username, String password) {
+        this.site = site;
+        this.username = username;
+        this.password = password;
+    }
+}
+
+
+public class Main {
+
+    static ArrayList<Credential> vault = new ArrayList<>();
+    static Scanner sc = new Scanner(System.in);
+
+    public static void main(String[] args) {
+
+        int choice;
+
+        do {
+            System.out.println("\n===== PASSWORD VAULT SYSTEM =====");
+            System.out.println("1. Add Credential");
+            System.out.println("2. View Credentials");
+            System.out.println("3. Delete Credential");
+            System.out.println("4. Exit");
+
+            System.out.print("Enter your choice: ");
+            choice = sc.nextInt();
+            sc.nextLine(); // clear buffer
+
+            switch (choice) {
+
+                case 1:
+                    addCredential();
+                    break;
+
+                case 2:
+                    viewCredentials();
+                    break;
+
+                case 3:
+                    deleteCredential();
+                    break;
+
+                case 4:
+                    System.out.println("Exiting System...");
+                    break;
+
+                default:
+                    System.out.println("Invalid choice!");
+            }
+
+        } while (choice != 4);
+    }
+
+    
+    static void addCredential() {
+        System.out.print("Enter Website/App Name: ");
+        String site = sc.nextLine();
+
+        System.out.print("Enter Username: ");
+        String username = sc.nextLine();
+
+        System.out.print("Enter Password: ");
+        String password = sc.nextLine();
+
+        vault.add(new Credential(site, username, password));
+        System.out.println("Credential Saved Successfully!");
+    }
+
+
+    static void viewCredentials() {
+        if (vault.isEmpty()) {
+            System.out.println("No credentials stored!");
+            return;
+        }
+
+        System.out.println("\n--- Stored Credentials ---");
+        for (Credential c : vault) {
+            System.out.println("Site: " + c.site +
+                    " | Username: " + c.username +
+                    " | Password: " + c.password);
+        }
+    }
+
+    
+    static void deleteCredential() {
+        System.out.print("Enter Website/App Name to delete: ");
+        String site = sc.nextLine();
+
+        Iterator<Credential> it = vault.iterator();
+
+        while (it.hasNext()) {
+            Credential c = it.next();
+            if (c.site.equalsIgnoreCase(site)) {
+                it.remove();
+                System.out.println("Credential Deleted Successfully!");
+                return;
+            }
+        }
+
+        System.out.println("Credential Not Found!");
+    }
+}
